@@ -60,7 +60,6 @@ public class Hexagon extends JPanel implements Observer, MouseListener, MouseMot
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(getWidth_(), getHeight_());
-        //return new Dimension(1000, 1000);
     }
 
     public int getWidth_(){
@@ -73,14 +72,13 @@ public class Hexagon extends JPanel implements Observer, MouseListener, MouseMot
 
     private int sign (int x) {
         return (x > 0) ? 1 : (x < 0) ? -1 : 0;
-        //возвращает 0, если аргумент (x) равен нулю; -1, если x < 0 и 1, если x > 0.
     }
 
     public void drawBresenhamLine (int xstart, int ystart, int xend, int yend) {
         int x, y, dx, dy, incx, incy, pdx, pdy, es, el, err;
 
-        dx = xend - xstart;//проекция на ось икс
-        dy = yend - ystart;//проекция на ось игрек
+        dx = xend - xstart;
+        dy = yend - ystart;
 
         incx = sign(dx);
         incy = sign(dy);
@@ -106,7 +104,7 @@ public class Hexagon extends JPanel implements Observer, MouseListener, MouseMot
         x = xstart;
         y = ystart;
         err = el/2;
-        //первая точка
+
         graf.setColor(Color.BLACK);
         graf.drawLine(x,y,x,y);
 
@@ -153,12 +151,6 @@ public class Hexagon extends JPanel implements Observer, MouseListener, MouseMot
         if(!gameStarted)
         {
             startFilling(imgField, getHeight_(), getWidth_(), x+10, y, Color.WHITE, Color.LIGHT_GRAY);
-//            if(impact == true)
-//            {
-//                getImpact(x+cos30+1, y+2*sin30,
-//                        (int) coordinatesToPoint.get(new Point(x+cos30, y+sin30)).getX(),
-//                        (int) coordinatesToPoint.get(new Point(x+cos30, y+sin30)).getY());
-//            }
         }
     }
 
@@ -182,7 +174,6 @@ public class Hexagon extends JPanel implements Observer, MouseListener, MouseMot
                 }
             }
         }
-
     }
 
     public BufferedImage drawImpact(){
@@ -212,7 +203,6 @@ public class Hexagon extends JPanel implements Observer, MouseListener, MouseMot
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        //System.out.println(distanceToCenter(50,60,100,20));
 
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -227,7 +217,6 @@ public class Hexagon extends JPanel implements Observer, MouseListener, MouseMot
                 for(int j = 0; j< max_length_of_line; ++j) {
                     if (this.field.isAlive(i,j))
                     {
-//                        System.out.println("blalvla");
                         spanFilling(imgField, getHeight_(), getWidth_(),
                                 (int)pointToCoordinates.get(new Point(j,i)).getX(),
                                 (int)pointToCoordinates.get(new Point(j,i)).getY(),
@@ -272,15 +261,11 @@ public class Hexagon extends JPanel implements Observer, MouseListener, MouseMot
         this.field = field;
         max_length_of_line = field.getMaxLengthOfLine();
         number_of_lines = field.getNumberOfLines();
-//        System.out.println(max_length_of_line+" "+number_of_lines);
         gameStarted = false;
         setPreferredSize(new Dimension(getWidth_(), getHeight_()));
-//        System.out.println(getWidth_()+" "+getHeight_());
         imgField = new BufferedImage(getWidth_(), getHeight_(), BufferedImage.TYPE_INT_ARGB);
-        //System.out.println(getPreferredSize());
         graf = imgField.getGraphics();
         revalidate();
-
         repaint();
     }
 
@@ -289,7 +274,6 @@ public class Hexagon extends JPanel implements Observer, MouseListener, MouseMot
         if(repaint) {
             x = e.getX();
             y = e.getY();
-//            System.out.println(x+ " "+ y);
             if (x <= getWidth_() && y <= getHeight_()) {
                 Raster raster = imgField.getRaster();
                 ColorModel model = imgField.getColorModel();
@@ -351,22 +335,12 @@ public class Hexagon extends JPanel implements Observer, MouseListener, MouseMot
                 }
             }
         }
-        //System.out.println(x + " "+ y);
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
 
     }
-
-//    public int getWidth_(){
-//        return  2*cos30*max_length_of_line;
-//    }
-//
-//    public int getHeight_(){
-//        return (sin30 + length)*number_of_lines;
-//    }
-
 
     public void spanFilling(BufferedImage img, int height, int width, int px, int py,
                                    Color targetColor, Color replacementColor) {
@@ -410,32 +384,24 @@ public class Hexagon extends JPanel implements Observer, MouseListener, MouseMot
 
     public static void startFilling(BufferedImage img, int height, int width, int px, int py,
                                    Color targetColor, Color replacementColor) {
-        //System.out.println("lolkek");
         int target = targetColor.getRGB();
         int replacement = replacementColor.getRGB();
-
-        //System.out.println("color" +target + " " + replacement);
 
         if (target != replacement) {
             Deque<Point> queue = new LinkedList<>();
             queue.add(new Point(px, py));
             Point p;
             while ((p = queue.pollFirst()) != null) {
-                //System.out.println("lolkek1");
                 int x = p.x;
                 int y = p.y;
-                // System.out.println("new "+x + " "+ y);
 
-                //System.out.println(img.getRGB(x, y) + " " + target);
                 while (x > 0 && (img.getRGB(x - 1, y) == target || img.getRGB(x - 1, y) == 0)) {
-                    //System.out.println("while "+img.getRGB(x - 1, y));
                     x--;
                 }
                 boolean spanAbove = false;
                 boolean spanBelow = false;
 
                 while (x < width && (img.getRGB(x , y) == target || img.getRGB(x, y) == 0)) {
-                    //System.out.println("lolkek2");
                     img.setRGB(x, y, replacement);
                     if (!spanAbove && y > 0 && (img.getRGB(x , y-1) == target || img.getRGB(x, y-1) == 0)) {
                         queue.add(new Point(x, y - 1));
@@ -460,12 +426,10 @@ public class Hexagon extends JPanel implements Observer, MouseListener, MouseMot
         return dist;
     }
 
-    //определяет порядковые координаты закращенной ячейки
+
     private Point centerOfTheSelectedCell(){
         int _x = x;
         int _y = y;
-//        System.out.println(_x+" "+_y);
-        int startY, endY;
         double d1 = 0;
         double d2 = 0;
         double d3 = 0;
@@ -477,40 +441,27 @@ public class Hexagon extends JPanel implements Observer, MouseListener, MouseMot
             for(int i = 2*sin30; i < this.getHeight_(); i+=3*sin30){
                 for(int j = 0; j < this.getWidth_(); j+=cos30) {
                     if ((_y > i) && (_y <= i + 3 * sin30) && (_x > j) && (_x <= (j+cos30))) {
-//                        System.err.println("HUY2");
-//                        graf.setColor(Color.BLUE);
-//                        graf.drawLine(j,i,j+cos30, i+3*sin30);
                         if(coordinatesToPoint.containsKey(new Point(j,i))){
                             d1 = distanceToCenter(_x,_y,j,i);
-//                            System.out.println("d1 "+d1);
                         }
                         if(coordinatesToPoint.containsKey(new Point(j,i+3*sin30))){
                             d2 = distanceToCenter(_x,_y,j,i+3*sin30);
-//                            System.out.println("d2 "+d2);
                         }
                         if(coordinatesToPoint.containsKey(new Point(j+cos30,i+3*sin30))){
                             d3 = distanceToCenter(_x,_y,j+cos30,i+3*sin30);
-//                            System.out.println("d3 "+d3);
-                            if(d1<d3)
-                            {
-//                                System.out.println(coordinatesToPoint.get(new Point(j,i)));
+                            if(d1<d3) {
                                 return coordinatesToPoint.get(new Point(j,i));
                             }
                             else{
-//                                System.out.println(coordinatesToPoint.get(new Point(j+cos30,i+3*sin30)));
                                 return coordinatesToPoint.get(new Point(j+cos30,i+3*sin30));
                             }
                         }
                         if(coordinatesToPoint.containsKey(new Point(j+cos30,i))){
                             d4 = distanceToCenter(_x,_y,j+cos30,i);
-//                            System.out.println("d4 "+d4);
-                            if(d2<d4)
-                            {
-//                                System.out.println(coordinatesToPoint.get(new Point(j,i+3*sin30)));
+                            if(d2<d4) {
                                 return coordinatesToPoint.get(new Point(j,i+3*sin30));
                             }
                             else{
-//                                System.out.println(coordinatesToPoint.get(new Point(j+cos30,i)));
                                 return coordinatesToPoint.get(new Point(j+cos30,i));
                             }
                         }
@@ -568,102 +519,7 @@ public class Hexagon extends JPanel implements Observer, MouseListener, MouseMot
                 }
             }
         }
-//
-//        graf.setColor(Color.BLUE);
-//        for(int i = 0; i < this.getWidth_(); i+=cos30){
-//            graf.drawLine(i,0,i,getHeight_());
-//        }
-//        graf.setColor(Color.CYAN);
-//        for(int i = 2*sin30; i < this.getHeight_(); i+=3*sin30){
-//            graf.drawLine(0,i,getWidth_(),i);
-//        }
         repaint();
-
-////        if (_y < (sin30+length/2))
-////        {
-////            for(int j = 1; j <= max_length_of_line; ++j)
-////            {
-////                if(_x < j*2*cos30)
-////                {
-////                    return new Point(0, j-1);
-////                }
-////            }
-////            //return new Point(0,1);
-////        }
-//        for(int i = 0; i < number_of_lines-1; ++i)
-//        {
-//            if(_y < (sin30+length/2 + i*(length+sin30)))
-//            {
-////                graf.setColor(Color.GREEN);
-////                graf.drawLine(0,sin30+length/2 + i*(length+sin30), getWidth_(), sin30+length/2 + i*(length+sin30));
-//                for(int j = 1; j <= max_length_of_line; ++j)
-//                {
-//                    if(i%2 == 0) {
-//                        if (_x < j * 2 * cos30) {
-////                            graf.setColor(Color.GREEN);
-////                            graf.drawLine(j * 2 * cos30,0, j * 2 * cos30, getHeight_());
-//                            double dist1 = distanceToCenter(_x, _y,
-//                                    (int) pointToCoordinates.get(new Point(j - 1, i - 1)).getX(),
-//                                    (int) pointToCoordinates.get(new Point(j - 1, i - 1)).getY());
-//                            double dist2 = distanceToCenter(_x, _y,
-//                                    (int) pointToCoordinates.get(new Point(j - 2, i - 1)).getX(),
-//                                    (int) pointToCoordinates.get(new Point(j - 2, i - 1)).getY());
-//                            double dist3 = distanceToCenter(_x, _y,
-//                                    (int) pointToCoordinates.get(new Point(j - 1, i)).getX(),
-//                                    (int) pointToCoordinates.get(new Point(j - 1, i)).getY());
-//                            if (dist1 < dist2) {
-//                                if (dist1 < dist3)
-//                                    return new Point(j - 1, i - 1);
-//                                else
-//                                    return new Point(j - 1, i);
-//                            } else {
-//                                if (dist2 < dist3)
-//                                    return new Point(j - 2, i - 1);
-//                                else
-//                                    return new Point(j - 1, i);
-//                            }
-//                        }
-//                    }
-//                    else
-//                    {
-//                        if (_x < j * 2 * cos30) {
-////                            graf.setColor(Color.GREEN);
-////                            graf.drawLine(j * 2 * cos30+cos30,0, j * 2 * cos30+cos30, getHeight_());
-//                            double dist1 = distanceToCenter(_x, _y,
-//                                    (int) pointToCoordinates.get(new Point(j - 2, i)).getX(),
-//                                    (int) pointToCoordinates.get(new Point(j - 2, i)).getY());
-//                            double dist2 = distanceToCenter(_x, _y,
-//                                    (int) pointToCoordinates.get(new Point(j-1, i-1)).getX(),
-//                                    (int) pointToCoordinates.get(new Point(j-1, i-1)).getY());
-//                            double dist3 = distanceToCenter(_x, _y,
-//                                    (int) pointToCoordinates.get(new Point(j-1, i)).getX(),
-//                                    (int) pointToCoordinates.get(new Point(j-1, i)).getY());
-//                            if (dist1 < dist2) {
-//                                if (dist1 < dist3)
-//                                    return new Point(j - 2, i);
-//                                else
-//                                    return new Point(j-1, i);
-//                            } else {
-//                                if (dist2 < dist3)
-//                                    return new Point(j-1, i-1);
-//                                else
-//                                    return new Point(j-1, i);
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        if(_y >= (sin30+length/2 + 9*(length+sin30)))
-//        {
-//            for(int j = 1; j <= max_length_of_line; ++j)
-//            {
-//                if(_x < j*2*cos30)
-//                {
-//                    return new Point(9, j-1);
-//                }
-//            }
-//        }
         return new Point(cos30,sin30+length/2);
     }
 
